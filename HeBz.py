@@ -150,7 +150,20 @@ def Lee2003(x,y,z):
 
     return val/0.695 #Conversion to K
 
+def read_parameters(filename="params.txt"):
+    """Read PES parameters from a file and convert to atomic units."""
+    f = open(filename,mode='r')
+    lines = f.readlines()
+    xpar = []
+    for line in lines:
+        p = line.split()
+        xpar.append(float(p[1]))
+    f.close()
+    return xpar
+
 def Shirkov2024(x,y,z):
+    par = read_parameters()
+    x0 = generate_benzene_geometry()
     # Rotate x,y,z by 30 degrees to maintain consistency with the other potentials.
     xr = x * np.cos(30.0 * np.pi/180.0) - y * np.sin(30.0 * np.pi/180.0)
     yr = x * np.sin(30.0 * np.pi/180.0) + y * np.cos(30.0 * np.pi/180.0)
@@ -310,7 +323,7 @@ def index_calc(x,y,z):
     totalslicep = 0
     for yj in range(ymaxind):
         totalslicep += np.floor((xmax - yj*dy*np.sqrt(3))/dx) + 1
-    zind = np.round((z-0.9)/dz)
+    zind = np.round((z)/dz)
     index = zind*(totalslicep)
     yind = np.round(y/dy)
     for yj in range(int(yind)):
@@ -378,19 +391,19 @@ def Vcons(x,y,z):
     zmax = 7
     nzp = int((zmax - 0.9)/dz) + 1
     if (z < 2.1 and r < 3):
-        val += LennardJones(coord[0],coord[1],coord[2])
+        val += LennardJones(coord[0],coord[1],coord[2])*0.695
     elif (5.5 < z <= 6.5):
-        val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2]) + 0.6) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
+        val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
     elif (z > 6.5):
-        val += LennardJones(coord[0],coord[1],coord[2]) + 0.6
+        val += LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2
     elif (z <= 1.4):
-        val += LennardJones(coord[0],coord[1],coord[2]) + 2
+        val += LennardJones(coord[0],coord[1],coord[2])*0.695 + 2
     elif (r >= 5):
-        zind = int(np.round((z-0.9)/dz))
-        val += LennardJones(coord[0],coord[1],coord[2]) + offsets[zind]
+        zind = int(np.round((z)/dz))
+        val += LennardJones(coord[0],coord[1],coord[2]*0.695) + offsets[zind]
     elif (r > 4.6 and r < 5):
-        zind = int(np.round((z-0.9)/dz))
-        val += smoothening(r,4.8,0.4)*(LennardJones(coord[0],coord[1],coord[2]) + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
+        zind = int(np.round((z)/dz))
+        val += smoothening(r,4.8,0.4)*(LennardJones(coord[0],coord[1],coord[2]*0.695) + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
     else:
         val += lookup(P,x,y,z)
     return val/0.695 #Return the value in K 
