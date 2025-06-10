@@ -379,24 +379,24 @@ def Vcons(x,y,z):
     nzp = int((zmax - 0.9)/dz) + 1
     if (z < 2.1 and r < 3):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += LJval2(coord[0],coord[1],coord[2],LJ)
+        val += LennardJones(coord[0],coord[1],coord[2])
     elif (5.5 < z <= 6.5):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += smoothening(z,6.0,0.5)*(LJval2(coord[0],coord[1],coord[2],LJ) + 0.6) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
+        val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2]) + 0.6) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
     elif (z > 6.5):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += LJval2(coord[0],coord[1],coord[2],LJ) + 0.6
+        val += LennardJones(coord[0],coord[1],coord[2]) + 0.6
     elif (z <= 1.4):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += LJval2(coord[0],coord[1],coord[2],LJ) + 2
+        val += LennardJones(coord[0],coord[1],coord[2]) + 2
     elif (r >= 5):
         zind = int(np.round((z-0.9)/dz))
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += LJval2(coord[0],coord[1],coord[2],LJ) + offsets[zind]
+        val += LennardJones(coord[0],coord[1],coord[2]) + offsets[zind]
     elif (r > 4.6 and r < 5):
         zind = int(np.round((z-0.9)/dz))
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
-        val += smoothening(r,4.8,0.4)*(LJval2(coord[0],coord[1],coord[2],LJ) + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
+        val += smoothening(r,4.8,0.4)*(LennardJones(coord[0],coord[1],coord[2]) + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
     else:
         val += lookup(P,x,y,z)
     return val/0.695 #Return the value in K 
