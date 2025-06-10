@@ -162,7 +162,7 @@ def Shirkov2024(x,y,z):
 
     # Cartesian to Spherical conversion
     r = np.sqrt(x**2 + y**2 + z**2)
-    th0 = np.atan2(x,y)
+    th0 = np.arctan2(x,y)
     ph0 = np.arccos(z/r)
     tt = np.cos(th0)
     fi = ph0
