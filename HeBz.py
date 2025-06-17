@@ -397,10 +397,8 @@ def Vcons(x,y,z):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
         val += LennardJones(coord[0],coord[1],coord[2])*0.695
     elif (5.5 < z < 6.5):
-        print("Region 1: ",z)
         val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
     elif (z >= 6.5):
-        print("Region 2: ",z)
         val += LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2
     elif (r >= 5):
         val += LennardJones(coord[0],coord[1],coord[2])*0.695 + offsets[zind]
