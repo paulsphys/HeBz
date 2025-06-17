@@ -313,9 +313,9 @@ def Shirkov2024(x,y,z):
     return v3/0.695
 
 def index_calc(x,y,z):
-    dx = 0.05
-    dy = 0.05
-    dz = 0.05
+    dx = 0.02
+    dy = 0.02
+    dz = 0.02
     zmax = 7
     xmax = 5
     ymax = 5.0/np.sqrt(3)
@@ -377,33 +377,37 @@ def Vcons(x,y,z):
     Wallcx = Lx/2.0 - 1.4;
     Wallcy = Ly/2.0 - 1.4;
     invWallWidth = 20.0;
-    vwall = hard_wall_height*(1/(1.0+np.exp(-invWallWidth*(x-Wallcx))) + 1/(1.0+np.exp(-invWallWidth*(y-Wallcy))) + 1/(1.0+np.exp(-invWallWidth*(z-Wallcz))));
+    vwall = 1/(1.0+np.exp(-invWallWidth*(z-Wallcz)));
     val = 0
     if (z < 0): z = -z
     coord = np.array([x,y,z])
     r = np.sqrt(x**2 + y**2)
     #Read the file into array P
-    with open('potdata.dat','rb') as f:
+    with open('potdatafine.dat','rb') as f:
         P = np.fromfile(f)
-    with open('offsets.dat','rb') as f:
+    with open('offsets_latfine.dat','rb') as f:
         offsets = np.fromfile(f)
-    dz = 0.05
+    dz = 0.02
     zmax = 7
-    nzp = int((zmax - 0.9)/dz) + 1
+    nzp = int((zmax/dz)) + 1
+    zind = int(np.round((z)/dz))
     if (z < 2.1 and r < 3):
         val += LennardJones(coord[0],coord[1],coord[2])*0.695
-    elif (5.5 < z <= 6.5):
+    elif (z < 1.4 and r < 4):
+        LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
+        val += LennardJones(coord[0],coord[1],coord[2])*0.695
+    elif (5.5 < z < 6.5):
+        print("Region 1: ",z)
         val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
-    elif (z > 6.5):
+    elif (z >= 6.5):
+        print("Region 2: ",z)
         val += LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2
-    elif (z <= 1.4):
-        val += LennardJones(coord[0],coord[1],coord[2])*0.695 + 2
     elif (r >= 5):
-        zind = int(np.round((z)/dz))
-        val += LennardJones(coord[0],coord[1],coord[2]*0.695) + offsets[zind]
+        val += LennardJones(coord[0],coord[1],coord[2])*0.695 + offsets[zind]
     elif (r > 4.6 and r < 5):
         zind = int(np.round((z)/dz))
-        val += smoothening(r,4.8,0.4)*(LennardJones(coord[0],coord[1],coord[2]*0.695) + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
+        val += smoothening(r,4.8,0.4)*(LennardJones(coord[0],coord[1],coord[2])*0.695 + offsets[zind]) + (1-smoothening(r,4.8,0.4))*lookup(P,x,y,z)
     else:
         val += lookup(P,x,y,z)
-    return val/0.695 #Return the value in K 
+    return val/0.695
+
