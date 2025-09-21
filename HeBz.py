@@ -165,8 +165,8 @@ def Shirkov2024(x,y,z):
     par = read_parameters()
     x0 = generate_benzene_geometry()
     # Rotate x,y,z by 30 degrees to maintain consistency with the other potentials.
-    xr = x * np.cos(30.0 * np.pi/180.0) - y * np.sin(30.0 * np.pi/180.0)
-    yr = x * np.sin(30.0 * np.pi/180.0) + y * np.cos(30.0 * np.pi/180.0)
+    xr = x * np.cos(-30.0 * np.pi/180.0) - y * np.sin(-30.0 * np.pi/180.0)
+    yr = x * np.sin(-30.0 * np.pi/180.0) + y * np.cos(-30.0 * np.pi/180.0)
     x = xr
     y = yr
     # Pre-allocate outputs
@@ -175,10 +175,11 @@ def Shirkov2024(x,y,z):
 
     # Cartesian to Spherical conversion
     r = np.sqrt(x**2 + y**2 + z**2)
-    th0 = np.arctan2(x,y)
-    ph0 = np.arccos(z/r)
+    ph0 = np.arctan2(y,x)
+    th0 = np.arccos(z/r)
     tt = np.cos(th0)
     fi = ph0
+    #print(r,ph0,th0,tt,fi)
     # Extract parameters
     (re, ae, c0, v0, c3, c4, c5, c6, c7, c8, c12, c112, c1122, c1112, c11112,
      c11122, c111222, c111112, c111122, c123, c1123, c11223, c11123, c112233,
@@ -397,8 +398,10 @@ def Vcons(x,y,z):
         LJ = np.array([[2.98, 18.36],[2.70, 12.13]])
         val += LennardJones(coord[0],coord[1],coord[2])*0.695
     elif (5.5 < z < 6.5):
+        print("Region 1: ",z)
         val += smoothening(z,6.0,0.5)*(LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2) + (1-smoothening(z,6.0,0.5))*lookup(P,x,y,z)
     elif (z >= 6.5):
+        print("Region 2: ",z)
         val += LennardJones(coord[0],coord[1],coord[2])*0.695 - 0.2
     elif (r >= 5):
         val += LennardJones(coord[0],coord[1],coord[2])*0.695 + offsets[zind]
