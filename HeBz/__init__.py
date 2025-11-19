@@ -1,1 +1,1 @@
-from . import HeBenzene
+from . import HeBz
