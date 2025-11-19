@@ -437,4 +437,4 @@ def V(x,y,z):
         val += (1-h_long)*val_gp + h_long*longrange(xeval,yeval,z)
     else:
         val += val_gp
-    return val/0.695
+    return val[0]/0.695
