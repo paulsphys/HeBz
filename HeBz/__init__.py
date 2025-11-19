@@ -1,1 +1,1 @@
-from . import HeBz
+from .HeBz import *
