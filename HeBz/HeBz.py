@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.special import gamma, kv
 from scipy.spatial.distance import cdist
+from importlib import resources
 
 def benzene():
     """
@@ -154,13 +155,12 @@ def Lee2003(x,y,z):
 
 def read_parameters(filename="params.txt"):
     """Read PES parameters from a file and convert to atomic units."""
-    f = open(filename,mode='r')
-    lines = f.readlines()
+    with resources.open_text("HeBz", filename) as f:
+        lines = f.readlines()
     xpar = []
     for line in lines:
         p = line.split()
         xpar.append(float(p[1]))
-    f.close()
     return xpar
 
 def Shirkov2024(x,y,z):
@@ -378,7 +378,8 @@ def V(x,y,z):
     
     #with open('data.pkl', 'rb') as file:
     #    gp_data = pickle.load(file)
-    gp_data = np.load('data.npz')
+    with resources.path("HeBz", "data.npz") as data_path:    
+        gp_data = np.load(data_path)
     hard_wall_height = 100000;
     r0 = 0.5765366674E+01
     gama = 0.1671477473E+02
