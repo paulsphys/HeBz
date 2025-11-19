@@ -6,4 +6,4 @@ This repository contains all the interaction potentials for Helium-Benzene inter
 4) A gaussian process potential derived from CCSD(T)/CBS data.
 
 The methods can be accessed as <code>LennardJones</code>, <code>Lee2003</code>, <code>Shirkov2024</code> and <code>V</code>. Each function takes $$x,y,z$$ coordinates 
-in $$\AA$$ and output the potential $$K$$.
+in $$\AA$$ and outputs the potential in Kelvin.
