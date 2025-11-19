@@ -6,4 +6,11 @@ This repository contains all the interaction potentials for Helium-Benzene inter
 4) A gaussian process potential derived from CCSD(T)/CBS data.
 
 The methods can be accessed as <code>LennardJones</code>, <code>Lee2003</code>, <code>Shirkov2024</code> and <code>V</code>. Each function takes $$x,y,z$$ coordinates 
-in $$\AA$$ and outputs the potential in Kelvin.
+in Å and outputs the potential in Kelvin.
+
+## Installation
+For now, we have not uploaded to pypi but the scripts can be installed directly
+from git:
+```console
+pip install git+https://github.com/paulsphys/HeBz.git
+```
