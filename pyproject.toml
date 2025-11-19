@@ -14,6 +14,15 @@ dependencies = [
     "scipy",
 ]
 
+# Discover packages inside the repo root
 [tool.setuptools.packages.find]
 where = ["."]
+
+# Include non-Python data files inside the HeBz/ directory
+[tool.setuptools.package-data]
+HeBz = ["*"]             
+
+# Ensure data inside the package is included
+[tool.setuptools]
 include-package-data = true
+
