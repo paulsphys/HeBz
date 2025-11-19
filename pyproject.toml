@@ -14,5 +14,5 @@ dependencies = [
     "scipy",
 ]
 
-[tool.setuptools]
+[tool.setuptools.packages.find]
 packages = ["."]
