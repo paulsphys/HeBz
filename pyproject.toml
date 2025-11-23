@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "HeBz"
-version = "0.0.8"
+version = "0.0.9"
 description = "A library that tabulates all the potentials for Helium - Benzene interaction"
 authors = [{ name="Sutirtha Paul", email="spaul19@vols.utk.edu"}]
 readme = "README.md"
