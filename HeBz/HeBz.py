@@ -58,7 +58,7 @@ def generate_benzene_geometry():
     return coords
 
 
-def LennardJones(x,y,z):
+def _LennardJones(x,y,z):
     """
     Returns the sum of pairwise interactions between He and all the Benzene atoms in K.
     """
@@ -73,7 +73,7 @@ def LennardJones(x,y,z):
 
     return val
 
-def Lee2003(x,y,z):
+def _Lee2003(x,y,z):
     """
     Returns the fitted potential derived in Lee et. al., . J. Chem. Phys. 22 December 2003; 119 (24): 12956–12964. https://doi.org/10.1063/1.1628217
     """
@@ -163,7 +163,7 @@ def read_parameters(filename="params.txt"):
         xpar.append(float(p[1]))
     return xpar
 
-def Shirkov2024(x,y,z):
+def _Shirkov2024(x,y,z):
     par = read_parameters()
     x0 = generate_benzene_geometry()
     # Rotate x,y,z by 30 degrees to maintain consistency with the other potentials.
@@ -374,7 +374,7 @@ def longrange(x,y,z):
     return vdw
 
 #The potential function
-def V(x,y,z):
+def _V(x,y,z):
     
     #with open('data.pkl', 'rb') as file:
     #    gp_data = pickle.load(file)
@@ -438,3 +438,8 @@ def V(x,y,z):
     else:
         val += val_gp
     return val[0]/0.695
+
+LennardJones = np.vectorize(_LennardJones)
+Lee2003 = np.vectorize(_Lee2003)
+Shirkov2024 = np.vectorize(_Shirkov2024)
+V = np.vectorize(_V)
