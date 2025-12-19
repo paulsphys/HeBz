@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/999627159.svg)](https://doi.org/10.5281/zenodo.17982887)
+
 This repository contains all the interaction potentials for Helium-Benzene interaction. This includes 
 
 1) A Lennard-Jones potential
